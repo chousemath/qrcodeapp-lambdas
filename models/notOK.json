@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "notOK",
+  "type": "object",
+  "properties": {
+    "ok": { "type": "boolean" },
+    "error": { "type": "string" }
+  }
+}
