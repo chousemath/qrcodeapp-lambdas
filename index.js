@@ -15,6 +15,24 @@ AWS.config.update({ region: config.region });
 
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
+exports.destroyQRCodeScan = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const params = { 
+      TableName: config.tableNames.scans,
+      Key: event,
+    };
+    await ddb.delete(params).promise();
+    statusCode = 200;
+    body = { ok: true };
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
+
 exports.readQRCodeScan = async (event) => {
   let body;
   let statusCode;
