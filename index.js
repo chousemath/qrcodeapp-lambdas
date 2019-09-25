@@ -42,7 +42,7 @@ exports.readQRCodeScans = async (event) => {
     };
     if (event.category) {
       params.ScanFilter = {
-        timestamp: {
+        id: {
           ComparisonOperator: 'BEGINS_WITH',
           AttributeValueList: `${event.category}x`,
         }
