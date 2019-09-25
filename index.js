@@ -11,7 +11,7 @@ const {
 
 AWS.config.update({ region: config.region });
 
-const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
 exports.readQRCodeScan = async (event) => {
   let body;
@@ -19,11 +19,11 @@ exports.readQRCodeScan = async (event) => {
   try {
     const params = { 
       TableName: config.tableNames.scans,
-      Key: makeQRCodeScanKey(event),
+      Key: event,
     };
     const qrCodeScan = await ddb.getItem(params).promise();
     statusCode = 200;
-    body = AWS.DynamoDB.Converter.unmarshall(_data(qrCodeScan));
+    body = _data(qrCodeScan);
   } catch(e) {
     statusCode = 500;
     body = _error(e);
@@ -37,7 +37,7 @@ exports.createQRCodeScan = async (event) => {
   try {
     const params = { 
       TableName: config.tableNames.scans, 
-      Item: makeQRCodeScan(event), 
+      Item: event, 
     };
     await ddb.putItem(params).promise();
     statusCode = 200;
