@@ -42,7 +42,7 @@ exports.readQRCodeScans = async (event) => {
     };
     const qrCodeScans = await ddb.scan(params).promise();
     statusCode = 200;
-    body = _data(qrCodeScans.Items);
+    body = _data(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
   } catch(e) {
     statusCode = 500;
     body = _error(e);
