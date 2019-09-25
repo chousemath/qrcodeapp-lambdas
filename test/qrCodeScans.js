@@ -1,11 +1,29 @@
 const assert = require('assert');
 const {
   makeQRCodeScan,
+  makeQRCodeScanKey,
 } = require('../libraries/qrCodeScans');
 
 describe('qrCodeScans.js', () => {
+  describe('#makeQRCodeScanKey()', () => {
+    it('should return a formatted key object for DynamoDB', () => {
+      const event = {
+        id: 'a',
+        timestamp: 123,
+      };
+      const key = makeQRCodeScanKey(event);
+
+      assert.equal(key.hasOwnProperty('id'), true);
+      assert.equal(key.id.hasOwnProperty('S'), true);
+      assert.equal(key.id.S, 'a');
+
+      assert.equal(key.hasOwnProperty('timestamp'), true);
+      assert.equal(key.timestamp.hasOwnProperty('N'), true);
+      assert.equal(key.timestamp.N, 123);
+    });
+  });
   describe('#makeQRCodeScan()', () => {
-    it('should return return a formatted DynamoDB object', () => {
+    it('should return a formatted DynamoDB object', () => {
       const event = {
         "code": "code-abc",
         "location": "location-abc",
