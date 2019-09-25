@@ -11,6 +11,6 @@ exports.makeQRCodeScan = (event) => {
     longitude: { N: event.longitude.toString() },
     latitude: { N: event.latitude.toString() },
     category: { N: event.category.toString() },
-    timestamp: { N: (new Date()).getTime() },
+    timestamp: { N: (new Date()).getTime().toString() },
   };
 };
