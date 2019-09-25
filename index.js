@@ -40,14 +40,6 @@ exports.readQRCodeScans = async (event) => {
     const params = {
       TableName: config.tableNames.scans,
     };
-    if (event.category) {
-      params.ScanFilter = {
-        id: {
-          ComparisonOperator: 'BEGINS_WITH',
-          AttributeValueList: `${event.category}x`,
-        }
-      };
-    }
     const qrCodeScans = await ddb.scan(params).promise();
     statusCode = 200;
     body = _data(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
