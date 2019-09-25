@@ -25,7 +25,7 @@ exports.readQRCodeScan = async (event) => {
     };
     const qrCodeScan = await ddb.get(params).promise();
     statusCode = 200;
-    body = _data(qrCodeScan);
+    body = _data(qrCodeScan).Item;
   } catch(e) {
     statusCode = 500;
     body = _error(e);
