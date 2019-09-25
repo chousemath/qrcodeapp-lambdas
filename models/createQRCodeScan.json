@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "createQRCodeScan",
+  "type": "object",
+  "properties": {
+    "code": { "type": "string" },
+    "location": { "type": "string" },
+    "longitude": { "type": "number" },
+    "latitude": { "type": "number" },
+    "category": { "type": "integer" }
+  }
+}
