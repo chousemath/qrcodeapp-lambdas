@@ -23,7 +23,7 @@ exports.readQRCodeScan = async (event) => {
     };
     const qrCodeScan = await ddb.getItem(params).promise();
     statusCode = 200;
-    body = _data(qrCodeScan);
+    body = AWS.DynamoDB.Converter.unmarshall(_data(qrCodeScan));
   } catch(e) {
     statusCode = 500;
     body = _error(e);
