@@ -1,2 +1,4 @@
+compress
 config.js
+*.zip
 node_modules/

@@ -7,7 +7,11 @@ const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 exports.createQRCodeScan = async (event) => {
   const body = {
     ok: true,
-    data: 'test',
+    data: {
+      region: config.region,
+      tableName: config.tableNames.scans,
+      event,
+    },
   };
   const response = {
     statusCode: 200,
