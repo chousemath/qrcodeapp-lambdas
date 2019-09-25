@@ -40,7 +40,7 @@ exports.readQRCodeScans = async (event) => {
     const params = {
       TableName: config.tableNames.scans,
     };
-    const qrCodeScans = ddb.scan(params).promise();
+    const qrCodeScans = await ddb.scan(params).promise();
     statusCode = 200;
     body = _data(qrCodeScans.Items);
   } catch(e) {
