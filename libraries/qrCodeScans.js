@@ -1,9 +1,9 @@
 const makeQRCodeScanID = (category) => {
   return {
-    S: `${category}-${Math.floor(Math.random() * 10000000)}`,
+    S: `${category}x${Math.floor(Math.random() * 10000000)}`,
   };
 };
-exports.idForQRCodeScan = (category) => `${category}-${Math.floor(Math.random() * 10000000)}`;
+exports.idForQRCodeScan = (category) => `${category}x${Math.floor(Math.random() * 10000000)}`;
 exports.makeQRCodeScan = (event) => {
   return {
     id:  makeQRCodeScanID(event.category),

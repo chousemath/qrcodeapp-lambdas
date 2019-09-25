@@ -9,7 +9,7 @@ describe('qrCodeScans.js', () => {
   describe('#idForQRCodeScan', () => {
     it('should generate a DynamoDB id from a category', () => {
       const id = idForQRCodeScan(1);
-      assert(id.indexOf('1-') > -1, true);
+      assert(id.indexOf('1x') > -1, true);
     });
   });
   describe('#makeQRCodeScanKey()', () => {
