@@ -4,7 +4,10 @@ const {
   makeQRCodeScan,
   makeQRCodeScanKey,
 } = require('./libraries/qrCodeScans');
-const { _error } = require('./libraries/common');
+const { 
+  _data,
+  _error, 
+} = require('./libraries/common');
 
 AWS.config.update({ region: config.region });
 
