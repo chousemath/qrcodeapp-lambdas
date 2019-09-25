@@ -17,6 +17,6 @@ exports.makeQRCodeScan = (event) => {
 exports.makeQRCodeScanKey = (event) => {
   return {
     'id': { S: event.id },
-    'timestamp': { N: event.timestamp },
+    'timestamp': { N: event.timestamp.toString() },
   };
 };

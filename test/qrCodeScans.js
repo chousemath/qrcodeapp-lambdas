@@ -19,7 +19,7 @@ describe('qrCodeScans.js', () => {
 
       assert.equal(key.hasOwnProperty('timestamp'), true);
       assert.equal(key.timestamp.hasOwnProperty('N'), true);
-      assert.equal(key.timestamp.N, 123);
+      assert.equal(key.timestamp.N, '123');
     });
   });
   describe('#makeQRCodeScan()', () => {
