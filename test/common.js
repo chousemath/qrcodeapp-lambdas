@@ -2,9 +2,17 @@ const assert = require('assert');
 const {
   _data,
   _error,
+  _timestamp,
 } = require('../libraries/common');
 
 describe('common.js', () => {
+  describe('#_timestamp()', () => {
+    it('should return a timestamp in ms', () => {
+      const ts = _timestamp();
+      assert(ts > 1000000000000, true);
+      assert(ts < 9999999999999, true);
+    });
+  });
   describe('#_data()', () => {
     it('should return return a formatted data response object', () => {
       const response = _data({ name: 'jo' });

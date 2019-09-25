@@ -1,10 +1,17 @@
 const assert = require('assert');
 const {
+  idForQRCodeScan, 
   makeQRCodeScan,
   makeQRCodeScanKey,
 } = require('../libraries/qrCodeScans');
 
 describe('qrCodeScans.js', () => {
+  describe('#idForQRCodeScan', () => {
+    it('should generate a DynamoDB id from a category', () => {
+      const id = idForQRCodeScan(1);
+      assert(id.indexOf('1-') > -1, true);
+    });
+  });
   describe('#makeQRCodeScanKey()', () => {
     it('should return a formatted key object for DynamoDB', () => {
       const event = {

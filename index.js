@@ -1,12 +1,14 @@
 const AWS = require('aws-sdk');
 const { config } = require('./config');
 const { 
+  idForQRCodeScan,
   makeQRCodeScan,
   makeQRCodeScanKey,
 } = require('./libraries/qrCodeScans');
 const { 
   _data,
   _error, 
+  _timestamp, 
 } = require('./libraries/common');
 
 AWS.config.update({ region: config.region });
@@ -37,7 +39,10 @@ exports.createQRCodeScan = async (event) => {
   try {
     const params = { 
       TableName: config.tableNames.scans, 
-      Item: event, 
+      Item: Object.assign(event, {
+        id: idForQRCodeScan(event.category),
+        timestamp: _timestamp(),
+      }), 
     };
     await ddb.put(params).promise();
     statusCode = 200;

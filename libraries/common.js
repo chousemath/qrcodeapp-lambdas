@@ -1,3 +1,4 @@
+exports._timestamp = () => (new Date()).getTime();
 exports._data = (data) => {
   return {
     ok: true,
