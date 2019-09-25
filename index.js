@@ -21,7 +21,7 @@ exports.readQRCodeScan = async (event) => {
       TableName: config.tableNames.scans,
       Key: event,
     };
-    const qrCodeScan = await ddb.getItem(params).promise();
+    const qrCodeScan = await ddb.get(params).promise();
     statusCode = 200;
     body = _data(qrCodeScan);
   } catch(e) {
@@ -39,7 +39,7 @@ exports.createQRCodeScan = async (event) => {
       TableName: config.tableNames.scans, 
       Item: event, 
     };
-    await ddb.putItem(params).promise();
+    await ddb.put(params).promise();
     statusCode = 200;
     body = { ok: true };
   } catch(e) {
