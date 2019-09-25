@@ -33,6 +33,23 @@ exports.readQRCodeScan = async (event) => {
   return { statusCode, body };
 };
 
+exports.readQRCodeScans = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const params = {
+      TableName: config.tableNames.scans,
+    };
+    const qrCodeScans = ddb.query(params).promise();
+    statusCode = 200;
+    body = _data(qrCodeScans);
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
+
 exports.createQRCodeScan = async (event) => {
   let body;
   let statusCode;
