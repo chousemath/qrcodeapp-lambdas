@@ -68,6 +68,40 @@ exports.readQRCodeLocation = async (event) => {
   return { statusCode, body };
 };
 
+exports.updateQRCodeLocation = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const paramsRead = Object.assign({ Key: { name: event.newName, category: event.newCategory } }, paramsLocations);
+    const qrCodeLocation = await ddb.get(paramsRead).promise();
+    if (qrCodeLocation && qrCodeLocation.Item) {
+      statusCode = 400;
+      body = _error(new Error('Location already exists'));
+      return { statusCode, body };
+    }
+    const Key = { name: event.name, category: event.category };
+    const params = Object.assign({
+      Key,
+      UpdateExpression: 'set #a=:x, #b=:y',
+      ExpressionAttributeNames: {
+        '#a' : 'name',
+        '#b': 'category',
+      },
+      ExpressionAttributeValues: {
+        ':x' : event.newName,
+        ':y' : event.newCategory,
+      }
+    }, paramsLocations);
+    await ddb.update(params).promise();
+    statusCode = 200;
+    body = { ok: true };
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
+
 exports.destroyQRCodeLocation = async (event) => {
   let body;
   let statusCode;
