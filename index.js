@@ -15,15 +15,22 @@ AWS.config.update({ region: config.region });
 
 const ddb = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
-exports.destroyQRCodeScan = async (event) => {
+exports.createQRCodeLocation = async (event) => {
   let body;
   let statusCode;
   try {
+    const paramsRead = { TableName: config.tableNames.locations, Key: event, };
+    const qrCodeLocation = await ddb.get(paramsRead).promise();
+    if (qrCodeLocation && qrCodeLocation.Item) {
+      statusCode = 400;
+      body = _error(new Error('Location already exists'));
+      return { statusCode, body };
+    }
     const params = { 
-      TableName: config.tableNames.scans,
-      Key: event,
+      TableName: config.tableNames.locations, 
+      Item: Object.assign(event, { timestamp: _timestamp() }), 
     };
-    await ddb.delete(params).promise();
+    await ddb.put(params).promise();
     statusCode = 200;
     body = { ok: true };
   } catch(e) {
@@ -33,34 +40,14 @@ exports.destroyQRCodeScan = async (event) => {
   return { statusCode, body };
 };
 
-exports.readQRCodeScan = async (event) => {
+exports.readQRCodeLocation = async (event) => {
   let body;
   let statusCode;
   try {
-    const params = { 
-      TableName: config.tableNames.scans,
-      Key: event,
-    };
-    const qrCodeScan = await ddb.get(params).promise();
+    const params = { TableName: config.tableNames.locations, Key: event, };
+    const qrCodeLocation = await ddb.get(params).promise();
     statusCode = 200;
-    body = _data(qrCodeScan.Item);
-  } catch(e) {
-    statusCode = 500;
-    body = _error(e);
-  }
-  return { statusCode, body };
-};
-
-exports.readQRCodeScans = async (event) => {
-  let body;
-  let statusCode;
-  try {
-    const params = {
-      TableName: config.tableNames.scans,
-    };
-    const qrCodeScans = await ddb.scan(params).promise();
-    statusCode = 200;
-    body = _data(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
+    body = _data(qrCodeLocation.Item);
   } catch(e) {
     statusCode = 500;
     body = _error(e);
@@ -89,4 +76,47 @@ exports.createQRCodeScan = async (event) => {
   return { statusCode, body };
 };
 
+exports.readQRCodeScans = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const params = { TableName: config.tableNames.scans, };
+    const qrCodeScans = await ddb.scan(params).promise();
+    statusCode = 200;
+    body = _data(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
 
+exports.readQRCodeScan = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const params = { TableName: config.tableNames.scans, Key: event, };
+    const qrCodeScan = await ddb.get(params).promise();
+    statusCode = 200;
+    body = _data(qrCodeScan.Item);
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
+
+exports.destroyQRCodeScan = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const params = { TableName: config.tableNames.scans, Key: event, };
+    await ddb.delete(params).promise();
+    statusCode = 200;
+    body = { ok: true };
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
