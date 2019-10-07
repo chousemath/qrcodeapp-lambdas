@@ -70,17 +70,16 @@ exports.updateQRCodeLocation = async (event) => {
   let body;
   let statusCode;
   try {
-    const Key = { id: event.id, timestamp: event.timestamp };
     const params = Object.assign({
-      Key,
+      Key: { id: event.id, timestamp: event.timestamp },
       UpdateExpression: 'set #a=:x, #b=:y',
       ExpressionAttributeNames: {
         '#a' : 'name',
         '#b': 'category',
       },
       ExpressionAttributeValues: {
-        ':x' : event.newName,
-        ':y' : event.newCategory,
+        ':x' : event.name,
+        ':y' : event.category,
       }
     }, paramsLocations);
     await ddb.update(params).promise();
