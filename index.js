@@ -68,6 +68,21 @@ exports.readQRCodeLocation = async (event) => {
   return { statusCode, body };
 };
 
+exports.destroyQRCodeLocation = async (event) => {
+  let body;
+  let statusCode;
+  try {
+    const params = Object.assign({ Key: event }, paramsLocations);
+    await ddb.delete(params).promise();
+    statusCode = 200;
+    body = { ok: true };
+  } catch(e) {
+    statusCode = 500;
+    body = _error(e);
+  }
+  return { statusCode, body };
+};
+
 exports.createQRCodeScan = async (event) => {
   let body;
   let statusCode;
