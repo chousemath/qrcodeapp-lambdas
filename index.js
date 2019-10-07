@@ -21,7 +21,12 @@ exports.createQRCodeLocation = async (event) => {
   let body;
   let statusCode;
   try {
-    const paramsRead = Object.assign({ Key: event }, paramsLocations);
+    const paramsRead = Object.assign({
+      Key: {
+        id: event.id,
+        timestamp: event.timestamp
+      },
+    }, paramsLocations);
     const qrCodeLocation = await ddb.get(paramsRead).promise();
     if (qrCodeLocation && qrCodeLocation.Item) {
       statusCode = 400;
