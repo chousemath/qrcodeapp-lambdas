@@ -21,18 +21,6 @@ exports.createQRCodeLocation = async (event) => {
   let body;
   let statusCode;
   try {
-    const paramsRead = Object.assign({
-      Key: {
-        id: event.id,
-        timestamp: event.timestamp
-      },
-    }, paramsLocations);
-    const qrCodeLocation = await ddb.get(paramsRead).promise();
-    if (qrCodeLocation && qrCodeLocation.Item) {
-      statusCode = 400;
-      body = _error(new Error('Location already exists'));
-      return { statusCode, body };
-    }
     const params = Object.assign({ Item: {
       name: event.name,
       category: event.category,
@@ -55,7 +43,7 @@ exports.readQRCodeLocations = async (event) => {
   try {
     const qrCodeLocations = await ddb.scan(paramsLocations).promise();
     statusCode = 200;
-    body = _data(qrCodeLocations .Items.sort((a, b) => b.timestamp - a.timestamp));
+    body = _data(qrCodeLocations.Items.sort((a, b) => b.timestamp - a.timestamp));
   } catch(e) {
     statusCode = 500;
     body = _error(e);
@@ -82,14 +70,7 @@ exports.updateQRCodeLocation = async (event) => {
   let body;
   let statusCode;
   try {
-    const paramsRead = Object.assign({ Key: { name: event.newName, category: event.newCategory } }, paramsLocations);
-    const qrCodeLocation = await ddb.get(paramsRead).promise();
-    if (qrCodeLocation && qrCodeLocation.Item) {
-      statusCode = 400;
-      body = _error(new Error('Location already exists'));
-      return { statusCode, body };
-    }
-    const Key = { name: event.name, category: event.category };
+    const Key = { id: event.id, timestamp: event.timestamp };
     const params = Object.assign({
       Key,
       UpdateExpression: 'set #a=:x, #b=:y',
