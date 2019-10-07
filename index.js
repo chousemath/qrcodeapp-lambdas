@@ -45,7 +45,7 @@ exports.readQRCodeLocations = async (event) => {
   try {
     const qrCodeLocations = await ddb.scan(paramsLocations).promise();
     statusCode = 200;
-    body = _data(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
+    body = _data(qrCodeLocations .Items.sort((a, b) => b.timestamp - a.timestamp));
   } catch(e) {
     statusCode = 500;
     body = _error(e);
