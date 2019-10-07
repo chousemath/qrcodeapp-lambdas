@@ -72,13 +72,12 @@ exports.createQRCodeScan = async (event) => {
   let body;
   let statusCode;
   try {
-    const params = { 
-      TableName: config.tableNames.scans, 
+    const params = Object.assign({ 
       Item: Object.assign(event, {
         id: idForQRCodeScan(event.category),
         timestamp: _timestamp(),
       }), 
-    };
+    }, paramsScans);
     await ddb.put(params).promise();
     statusCode = 200;
     body = { ok: true };
@@ -93,8 +92,7 @@ exports.readQRCodeScans = async (event) => {
   let body;
   let statusCode;
   try {
-    const params = { TableName: config.tableNames.scans, };
-    const qrCodeScans = await ddb.scan(params).promise();
+    const qrCodeScans = await ddb.scan(paramsScans).promise();
     statusCode = 200;
     body = _data(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
   } catch(e) {
@@ -108,7 +106,7 @@ exports.readQRCodeScan = async (event) => {
   let body;
   let statusCode;
   try {
-    const params = { TableName: config.tableNames.scans, Key: event, };
+    const params = Object.assign({ Key: event }, paramsScans);
     const qrCodeScan = await ddb.get(params).promise();
     statusCode = 200;
     body = _data(qrCodeScan.Item);
@@ -123,7 +121,7 @@ exports.destroyQRCodeScan = async (event) => {
   let body;
   let statusCode;
   try {
-    const params = { TableName: config.tableNames.scans, Key: event, };
+    const params = Object.assign({ Key: event }, paramsScans);
     await ddb.delete(params).promise();
     statusCode = 200;
     body = { ok: true };
