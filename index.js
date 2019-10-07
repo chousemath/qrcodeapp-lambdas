@@ -28,10 +28,12 @@ exports.createQRCodeLocation = async (event) => {
       body = _error(new Error('Location already exists'));
       return { statusCode, body };
     }
-    const params = Object.assign({ Item: Object.assign(event, {
+    const params = Object.assign({ Item: {
+      name: event.name,
+      category: event.category,
       id: idForQRCodeScan(event.category),
       timestamp: _timestamp(),
-    })}, paramsLocations);
+    }}, paramsLocations);
     await ddb.put(params).promise();
     statusCode = 200;
     body = { ok: true };
