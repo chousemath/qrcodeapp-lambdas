@@ -1,1 +1,1 @@
-exports._timestamp = () => (new Date()).getTime();
+exports._timestamp = () => new Date().getTime();

@@ -12,6 +12,10 @@
     "aws-sdk": "^2.535.0"
   },
   "devDependencies": {
-    "mocha": "^6.2.0"
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "faker": "^4.1.0",
+    "mocha": "^6.2.2",
+    "prettier": "^1.18.2"
   }
 }
