@@ -32,14 +32,14 @@ exports.createQRCodeLocation = async (event) => {
     }}, paramsLocations);
     await ddb.put(params).promise();
     return ok;
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.readQRCodeLocations = async (event) => {
   try {
     const qrCodeLocations = await ddb.scan(paramsLocations).promise();
     return okWithData(qrCodeLocations.Items.sort((a, b) => b.timestamp - a.timestamp));
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.readQRCodeLocation = async (event) => {
@@ -47,7 +47,7 @@ exports.readQRCodeLocation = async (event) => {
     const params = Object.assign({ Key: event }, paramsLocations);
     const qrCodeLocation = await ddb.get(params).promise();
     return okWithData(qrCodeLocation.Item);
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.updateQRCodeLocation = async (event) => {
@@ -66,7 +66,7 @@ exports.updateQRCodeLocation = async (event) => {
     }, paramsLocations);
     await ddb.update(params).promise();
     return ok;
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.destroyQRCodeLocation = async (event) => {
@@ -74,7 +74,7 @@ exports.destroyQRCodeLocation = async (event) => {
     const params = Object.assign({ Key: event }, paramsLocations);
     await ddb.delete(params).promise();
     return ok;
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.createQRCodeScan = async (event) => {
@@ -87,14 +87,14 @@ exports.createQRCodeScan = async (event) => {
     }, paramsScans);
     await ddb.put(params).promise();
     return ok;
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.readQRCodeScans = async (event) => {
   try {
     const qrCodeScans = await ddb.scan(paramsScans).promise();
     return okWithData(qrCodeScans.Items.sort((a, b) => b.timestamp - a.timestamp));
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.readQRCodeScan = async (event) => {
@@ -102,7 +102,7 @@ exports.readQRCodeScan = async (event) => {
     const params = Object.assign({ Key: event }, paramsScans);
     const qrCodeScan = await ddb.get(params).promise();
     return okWithData(qrCodeScan.Item);
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };
 
 exports.destroyQRCodeScan = async (event) => {
@@ -110,5 +110,5 @@ exports.destroyQRCodeScan = async (event) => {
     const params = Object.assign({ Key: event }, paramsScans);
     await ddb.delete(params).promise();
     return ok;
-  } catch(e) return notOkWithData(e);
+  } catch(e) { return notOkWithData(e); }
 };

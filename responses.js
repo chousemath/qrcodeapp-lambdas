@@ -18,7 +18,6 @@ exports.notOK = {
   headers,
   body: { ok: false },
 };
-
 exports.okWithData = data => {
   return {
     statusCode: 200,
