@@ -4,24 +4,23 @@ const { assert } = require('chai')
 const faker = require('faker');
 const { config } = require('../config');
 
-const fakeQRCodeScan = () => {
+const fakeQRCodeLocation = () => {
   return {
     category: Math.round(Math.random()) + 1,
-    code: faker.lorem.paragraph(),
-    longitude: faker.address.longitude(),
-    latitude: faker.address.latitude(),
-    location: faker.company.companyName(),
+    name: faker.company.companyName(),
   };
 };
 
+const updateQRCodeLocation = fakeQRCodeLocation();
+
 let row;
-const root = `${config.rootURLDev}/qrcodescans`;
+const root = `${config.rootURLDev}/qrcodelocations`;
 let rowCount;
 
 chai.use(chaiHttp);
-describe('QRCodeScans', () => {
-  describe('/qrcodescans - GET', () => {
-    it('it should GET all the qr code scans', (done) => {
+describe('QRCodeLocations', () => {
+  describe('/qrcodelocations - GET', () => {
+    it('it should GET all the qr code locations', (done) => {
       chai.request(root)
         .get('/')
         .end((err, res) => {
@@ -38,11 +37,11 @@ describe('QRCodeScans', () => {
         });
     });
   });
-  describe('/qrcodescans - POST', () => {
-    it('it should create a new qr code scan', (done) => {
+  describe('/qrcodelocations - POST', () => {
+    it('it should create a new qr code location', (done) => {
       chai.request(root)
         .post('/')
-        .send(fakeQRCodeScan())
+        .send(fakeQRCodeLocation())
         .end((err, res) => {
           assert.equal(res.status, 200);
           res = res.body;
@@ -52,8 +51,8 @@ describe('QRCodeScans', () => {
         });
     });
   });
-  describe('/qrcodescans - GET after POST', () => {
-    it('it should GET all the qr code scans (including the new one)', (done) => {
+  describe('/qrcodelocations - GET after POST', () => {
+    it('it should GET all the qr code locations (including the new one)', (done) => {
       chai.request(root)
         .get('/')
         .end((err, res) => {
@@ -71,8 +70,8 @@ describe('QRCodeScans', () => {
         });
     });
   });
-  describe('/qrcodescans/:id - GET', () => {
-    it('it should GET a single qr code scan', (done) => {
+  describe('/qrcodelocations/:id - GET', () => {
+    it('it should GET a single qr code location', (done) => {
       chai.request(root)
         .get(`/${row.id}?timestamp=${row.timestamp}`)
         .end((err, res) => {
@@ -81,17 +80,44 @@ describe('QRCodeScans', () => {
           assert.equal(res.statusCode, 200);
           assert.isTrue(res.body.ok);
           assert.equal(res.body.data.id, row.id);
-          assert.equal(res.body.data.latitude, row.latitude);
-          assert.equal(res.body.data.longitude, row.longitude);
           assert.equal(res.body.data.category, row.category);
-          assert.equal(res.body.data.location, row.location);
-          assert.equal(res.body.data.code, row.code);
+          assert.equal(res.body.data.name, row.name);
           done();
         });
     });
   });
-  describe('/qrcodescans/:id - DELETE', () => {
-    it('it should DELETE a single qr code scan', (done) => {
+  describe('/qrcodelocations/:id - PUT', () => {
+    it('it should update an qr code location', (done) => {
+      chai.request(root)
+        .put(`/${row.id}?timestamp=${row.timestamp}`)
+        .send(updateQRCodeLocation)
+        .end((err, res) => {
+          assert.equal(res.status, 200);
+          res = res.body;
+          assert.equal(res.statusCode, 200);
+          assert.isTrue(res.body.ok);
+          done();
+        });
+    });
+  });
+  describe('/qrcodelocations/:id - GET (after PUT request)', () => {
+    it('it should GET a single qr code location (after it has been updated)', (done) => {
+      chai.request(root)
+        .get(`/${row.id}?timestamp=${row.timestamp}`)
+        .end((err, res) => {
+          assert.equal(res.status, 200);
+          res = res.body;
+          assert.equal(res.statusCode, 200);
+          assert.isTrue(res.body.ok);
+          assert.equal(res.body.data.category, updateQRCodeLocation.category);
+          assert.equal(res.body.data.name, updateQRCodeLocation.name);
+          assert.isTrue(res.body.data.createdAt === row.createdAt);
+          done();
+        });
+    });
+  });
+  describe('/qrcodelocations/:id - DELETE', () => {
+    it('it should DELETE a single qr code location', (done) => {
       chai.request(root)
         .delete(`/${row.id}?timestamp=${row.timestamp}`)
         .end((err, res) => {

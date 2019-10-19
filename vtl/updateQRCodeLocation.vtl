@@ -1,0 +1,7 @@
+#set($inputRoot = $input.path('$'))
+{
+  "id"        : "$input.params('id')",
+  "timestamp" : $input.params('timestamp'),
+  "name"      : "$inputRoot.name",
+  "category"  : $inputRoot.category
+}
