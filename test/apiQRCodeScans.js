@@ -90,17 +90,17 @@ describe('QRCodeScans', () => {
         });
     });
   });
-  describe('/qrcodescans/:id - DELETE', () => {
-    it('it should DELETE a single qr code scan', (done) => {
-      chai.request(root)
-        .delete(`/${row.id}?timestamp=${row.timestamp}`)
-        .end((err, res) => {
-          assert.equal(res.status, 200);
-          res = res.body;
-          assert.equal(res.statusCode, 200);
-          assert.isTrue(res.body.ok);
-          done();
-        });
-    });
-  });
+  //describe('/qrcodescans/:id - DELETE', () => {
+  //  it('it should DELETE a single qr code scan', (done) => {
+  //    chai.request(root)
+  //      .delete(`/${row.id}?timestamp=${row.timestamp}`)
+  //      .end((err, res) => {
+  //        assert.equal(res.status, 200);
+  //        res = res.body;
+  //        assert.equal(res.statusCode, 200);
+  //        assert.isTrue(res.body.ok);
+  //        done();
+  //      });
+  //  });
+  //});
 });

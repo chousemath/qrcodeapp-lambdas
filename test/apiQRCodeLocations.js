@@ -86,47 +86,47 @@ describe('QRCodeLocations', () => {
         });
     });
   });
-  describe('/qrcodelocations/:id - PUT', () => {
-    it('it should update an qr code location', (done) => {
-      chai.request(root)
-        .put(`/${row.id}?timestamp=${row.timestamp}`)
-        .send(updateQRCodeLocation)
-        .end((err, res) => {
-          assert.equal(res.status, 200);
-          res = res.body;
-          assert.equal(res.statusCode, 200);
-          assert.isTrue(res.body.ok);
-          done();
-        });
-    });
-  });
-  describe('/qrcodelocations/:id - GET (after PUT request)', () => {
-    it('it should GET a single qr code location (after it has been updated)', (done) => {
-      chai.request(root)
-        .get(`/${row.id}?timestamp=${row.timestamp}`)
-        .end((err, res) => {
-          assert.equal(res.status, 200);
-          res = res.body;
-          assert.equal(res.statusCode, 200);
-          assert.isTrue(res.body.ok);
-          assert.equal(res.body.data.category, updateQRCodeLocation.category);
-          assert.equal(res.body.data.name, updateQRCodeLocation.name);
-          assert.isTrue(res.body.data.createdAt === row.createdAt);
-          done();
-        });
-    });
-  });
-  describe('/qrcodelocations/:id - DELETE', () => {
-    it('it should DELETE a single qr code location', (done) => {
-      chai.request(root)
-        .delete(`/${row.id}?timestamp=${row.timestamp}`)
-        .end((err, res) => {
-          assert.equal(res.status, 200);
-          res = res.body;
-          assert.equal(res.statusCode, 200);
-          assert.isTrue(res.body.ok);
-          done();
-        });
-    });
-  });
+  //describe('/qrcodelocations/:id - PUT', () => {
+  //  it('it should update an qr code location', (done) => {
+  //    chai.request(root)
+  //      .put(`/${row.id}?timestamp=${row.timestamp}`)
+  //      .send(updateQRCodeLocation)
+  //      .end((err, res) => {
+  //        assert.equal(res.status, 200);
+  //        res = res.body;
+  //        assert.equal(res.statusCode, 200);
+  //        assert.isTrue(res.body.ok);
+  //        done();
+  //      });
+  //  });
+  //});
+  //describe('/qrcodelocations/:id - GET (after PUT request)', () => {
+  //  it('it should GET a single qr code location (after it has been updated)', (done) => {
+  //    chai.request(root)
+  //      .get(`/${row.id}?timestamp=${row.timestamp}`)
+  //      .end((err, res) => {
+  //        assert.equal(res.status, 200);
+  //        res = res.body;
+  //        assert.equal(res.statusCode, 200);
+  //        assert.isTrue(res.body.ok);
+  //        assert.equal(res.body.data.category, updateQRCodeLocation.category);
+  //        assert.equal(res.body.data.name, updateQRCodeLocation.name);
+  //        assert.isTrue(res.body.data.createdAt === row.createdAt);
+  //        done();
+  //      });
+  //  });
+  //});
+  //describe('/qrcodelocations/:id - DELETE', () => {
+  //  it('it should DELETE a single qr code location', (done) => {
+  //    chai.request(root)
+  //      .delete(`/${row.id}?timestamp=${row.timestamp}`)
+  //      .end((err, res) => {
+  //        assert.equal(res.status, 200);
+  //        res = res.body;
+  //        assert.equal(res.statusCode, 200);
+  //        assert.isTrue(res.body.ok);
+  //        done();
+  //      });
+  //  });
+  //});
 });
