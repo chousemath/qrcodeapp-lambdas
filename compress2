@@ -1,0 +1,11 @@
+#!/bin/bash
+
+node_modules/.bin/prettier --single-quote --trailing-comma es5 --write "*.js"
+node_modules/.bin/prettier --single-quote --trailing-comma es5 --write "libraries/*"
+
+git add .
+git commit -am "Compress files, and upload to S3"
+git push
+
+echo "Zipping up all files for upload to S3..."
+zip -r functions.zip .
